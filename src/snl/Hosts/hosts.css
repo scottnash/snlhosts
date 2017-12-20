@@ -1,0 +1,49 @@
+.hostsTable{
+  width: 100%;
+}
+
+.hostsTable tr:nth-child(even) {
+  background: #F5F5F5;
+  border-bottom: 1px solid #D3D3D3;
+  border-top: 1px solid #D3D3D3;
+}
+.hostsTable tr:nth-child(odd) {
+  background: #FFF;
+}
+
+.hostsTable td{
+  border: 0;
+  padding: 10px 5px;
+}
+.hostsTable th{
+  background: #F5F5F5;
+  border-bottom: 1px solid #D3D3D3;
+  padding: 15px;
+  vertical-align: top;
+}
+
+.hostsTable ul{
+  margin: 0;
+  padding: 0;
+}
+
+.hostsTable ul li{
+  margin: 5px 0;
+}
+
+.centerAlign{
+  text-align: center;
+}
+.leftAlign{
+  text-align: left;
+}
+
+.yearsBetween{
+  width: 200px;
+}
+
+@media only screen and (max-width: 768px)  {
+  .hideOnMobile{
+    display: none;
+  }
+}
