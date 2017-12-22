@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { connect, Provider } from 'react-redux';
 import moment from 'moment';
 import 'moment-precise-range-plugin';
+import ReactTable from 'react-table'
 import SNLHosts from '../../redux/SNLHosts';
 import './hosts.css';
+import 'react-table/react-table.css'
 
 class Hosts extends Component{
   constructor(props) {
@@ -95,8 +97,53 @@ class Hosts extends Component{
     if(this.props.hosts.length === 0){
       return null;
     }
+
+    const columns = [
+      {
+        id: "index",
+        Header: "Index",
+        accessor: (d) =>  0,
+        Cell: row => ( <p>{ row.index + 1 }</p> )
+      },
+      {
+        id: "thumbnail",
+        Header: "",
+        accessor: d => this.getImage(d)
+      },
+      {
+        Header: "Name",
+        accessor: 'name',
+      },
+      {
+        id: "dob",
+        Header: "Date of Birth",
+        accessor: d => moment(this.getDOB(d).propertyValue).format("MM/DD/YYYY"),
+        sortMethod: (a, b) => {
+          a = new Date(a).getTime() / 1000;
+          b = new Date(b).getTime() / 1000
+          if (a.length === b.length) {
+            return a > b ? 1 : -1;
+          }
+          return a.length > b.length ? 1 : -1;
+        }
+      },
+      {
+        id: "times",
+        Header: "Times",
+        accessor: d => this.getHostingDates(d.blather).length || 1
+      }
+    ];
+
     return(
       <div className="content-Holder">
+        <ReactTable
+          data={ this.props.hosts }
+          columns={ columns }
+          showPagination = { false }
+          defaultPageSize = { this.props.hosts.length }
+        />
+
+
         <table className="hostsTable" border="0" cellSpacing="0" cellPadding="0">
           <thead>
             <tr>
@@ -114,7 +161,7 @@ class Hosts extends Component{
             </tr>
           </thead>
           <tbody>
-            { this.renderHostLists() }
+
           </tbody>
         </table>
       </div>
