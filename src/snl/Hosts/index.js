@@ -90,7 +90,11 @@ class Hosts extends Component{
   }
 
   renderHostingDates = (hostingDates) => {
-    return hostingDates.map( (hostingDate, index) => <li key={ index }>{ hostingDate.showDate }</li> );
+    return (
+      <ul>
+      { hostingDates.map( (hostingDate, index) => <li key={ index }>{ hostingDate.showDate }</li> ) }
+      </ul>
+    );
   }
 
   render(){
@@ -131,6 +135,42 @@ class Hosts extends Component{
         id: "times",
         Header: "Times",
         accessor: d => this.getHostingDates(d.blather).length || 1
+      },
+      {
+        id: "firstHostingDate",
+        Header: "First Hosted",
+        accessor: d => `${ this.getHostingDates(d.blather)[0].showDate }`,
+        sortMethod: (a, b) => {
+            a = moment(a).format("X");
+            b = moment(b).format("X");
+          if (a.length === b.length) {
+            return a > b ? 1 : -1;
+          }
+          return a.length > b.length ? 1 : -1;
+        }
+      },
+      {
+        id: "firstHostingDateAge",
+        Header: "Age at first Host",
+        accessor: d => this.getAge( moment(this.getDOB(d).propertyValue).format("MM/DD/YYYY"), this.getHostingDates(d.blather)[0].dateArray ) 
+      },
+      {
+        id: "lastHostingDate",
+        Header: "Last Hosted",
+        accessor: d => `${ this.getHostingDates(d.blather)[this.getHostingDates(d.blather).length -1].showDate }`,
+        sortMethod: (a, b) => {
+            a = moment(a).format("X");
+            b = moment(b).format("X");
+          if (a.length === b.length) {
+            return a > b ? 1 : -1;
+          }
+          return a.length > b.length ? 1 : -1;
+        }
+      },
+      {
+        id: "hostingDates",
+        Header: "Hosting Dates",
+        accessor: d => this.renderHostingDates( this.getHostingDates(d.blather) )
       }
     ];
 
